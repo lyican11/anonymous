@@ -36,3 +36,22 @@ footer {
   font-size: 0.9em;
   color: #888;
 }
+
+details {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 1em;
+  transition: all 0.3s ease;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+details[open] {
+  background-color: #f0f8ff;
+}

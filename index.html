@@ -4,43 +4,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anonymous Paper Demo: Compiler Bugs & OS Kernels</title>
+  <title>How do compiler bugs affect OS kernels</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <header>
-    <h1>Interactive Demo: Impact of Compiler Bugs on OS Kernels</h1>
-    <p><strong>Paper ID:</strong> 1234</p>
+    <h1>How do compiler bugs affect OS kernels</h1>
+    <p><strong>Paper ID:</strong> #247</p>
   </header>
 
   <section class="content">
     <h2>Abstract</h2>
-    <p>We present supplementary results and tools for our empirical study on how compiler bugs affect OS kernel
-      development, based on analysis of 494 workarounds from 7 popular kernels.</p>
-
-    <h2>Demo</h2>
-    <p>Explore our data and tool:</p>
-    <iframe src="https://your-demo-link-if-any.com" width="100%" height="400" style="border:1px solid #ccc;"></iframe>
+    <p>As its name indicates, an operating system (OS) kernel is the core software of operating systems. Like other
+      software, compilers are critical in the development of OS kernels. A recent study shows that compiler bugs can
+      silently introduce bugs into their compiled code. Although compiler bugs are critical in the development of OS
+      kernels, most studies on compiler bugs analyze the characteristics of only compiler bugs. Their findings are less
+      interesting to outsiders, e.g. the OS community. Although two recent papers have started to analyze how compiler
+      bugs affect the development of other projects, no study has been conducted to explore how such bugs affect OS
+      kernels. As a result, many questions are still open. For instance, in the development of OS kernels, are most
+      compiler bugs identified by OS programmers themselves? When bypassing compiler bugs, what is the relationship
+      between compiler-bug symptoms and modified OS components? The answers to the above questions are useful for both
+      compiler and OS programmers.</p>
+    <p>To answer the above questions, we conducted the first empirical study on how compiler bugs affect OS kernels. We
+      collected 494 workarounds of compiler bugs from the revision histories of 7 popular OS kernels. We analyze these
+      workarounds and explore the answers to four research questions. We summarized our answers into 9 interesting
+      findings. For instance, we found that in most workarounds, compiler bugs are not reported by OS programmers. As
+      another example, we find that the libraries and make files of OS kernels are the most affected per code line.
+      Furthermore, we provide our interpretations of our findings for programmers and researchers.</p>
 
     <h2>Research Questions & Results</h2>
+    <details>
+      <summary><strong>RQ1: Who reports the compiler bugs?</strong></summary>
+      <p><strong>Goal:</strong> Compare identities of OS workaround authors and compiler bug reporters to study
+        knowledge flow direction.</p>
+      <p><strong>Results:</strong> In 61.9% of cases, the workaround author and bug reporter are different. OS
+        programmers usually read compiler bug reports instead of reporting them.</p>
+      <img src="images/rq1_flow.png" alt="Knowledge Flow Chart" style="max-width: 100%; border: 1px solid #ccc;" />
 
-    <h3>RQ1: Who reports the compiler bugs?</h3>
-    <p>We compare the identity of OS kernel workaround authors and compiler bug reporters to understand knowledge flow.
-    </p>
-    <img src="images/rq1_flow.png" alt="Knowledge Flow Chart" />
+      <p><strong>Findings:</strong></p>
+      <ul>
+        <li><strong>Finding 1:</strong> In 61.9% of the links, compiler bugs are not reported by programmers of OS
+          workarounds.</li>
+        <li><strong>Finding 2:</strong> Compared with other programmers, OS kernel programmers care more about
+          wrong-code and optimization compiler bugs.</li>
+      </ul>
 
-    <h3>RQ2: How long does it take from reporting bugs to implementing workarounds?</h3>
-    <p>We analyze the latency between bug report submission and workaround commits.</p>
-    <img src="images/rq2_latency_cdf.png" alt="CDF of Report-to-Commit Latency" />
+      <p><strong>Download Resources:</strong></p>
+      <ul>
+        <li><a href="assets/RQ1.xlsx" download>Download RQ1 Dataset (xlsx)</a></li>
+        <!-- <li><a href="assets/rq1_author_match_tool.zip" download>Download RQ1 Author-Match Tool</a></li> -->
+      </ul>
+    </details>
 
-    <h3>RQ3: How similar are code samples in bug reports to OS workaround code?</h3>
-    <p>We measure code similarity using JPlag and present distribution results by bug symptom.</p>
-    <img src="images/rq3_similarity.png" alt="Code Similarity Distribution" />
+    <details>
+      <summary><strong>RQ2: How long does it take from reporting bug reports to implementing their workarounds?</strong>
+      </summary>
+      <p><strong>Goal:</strong> Measure time delay between bug reporting and patching.</p>
+      <p><strong>Results:</strong> If OS programmers are not the bug reporters, the delay is ~10x longer.</p>
+      <img src="images/rq2_latency_cdf.png" alt="Latency CDF" style="max-width: 100%; border: 1px solid #ccc;" />
+      <ul>
+        <li><strong>Finding 3:</strong> When compiler bugs are not reported by OS programmers, it takes 10 times as many
+          days to identify and bypass them.</li>
+        <li><strong>Finding 4:</strong> The time intervals between reporting compiler bugs and bypassing them in OS
+          kernels are shorter when the symptoms are crashes, optimizations, and wrong-code bugs.</li>
+      </ul>
+      <p><strong>Download Resources:</strong></p>
+      <ul>
+        <li><a href="assets/RQ2.xlsx" download>Download RQ2 Dataset (xlsx)</a></li>
+      </ul>
+    </details>
 
-    <h3>RQ4: What is the relationship between symptoms, components, and modified lines?</h3>
-    <p>We link bug symptoms to modified OS components and analyze how symptoms affect code size.</p>
-    <img src="images/rq4_symptom_component.png" alt="Affected Components and LOC by Symptoms" />
+    <details>
+      <summary><strong>RQ3: How similar are the code samples from bug reports and the real code from OS
+          workarounds?</strong></summary>
+      <p><strong>Goal:</strong> Analyze the similarity between code samples in compiler bug reports and real modified
+        code in OS kernel workarounds.</p>
+      <p><strong>Method:</strong> We use <code>JPlag</code> with Greedy String Tiling algorithm to compare 239 (bug
+        sample, OS file) pairs.</p>
+      <img src="images/rq3_similarity.png" alt="Code Similarity Distribution"
+        style="max-width: 100%; border: 1px solid #ccc;" />
+
+      <p><strong>Findings:</strong></p>
+      <ul>
+        <li><strong>Finding 5:</strong> Except for a few cases, the code samples of bug reports are dissimilar to OS
+          kernel code.</li>
+        <li><strong>Finding 6:</strong> The code samples of wrong-code bugs are more different from the modified files
+          of OS kernels than compiler bugs with other symptoms.</li>
+      </ul>
+
+      <p><strong>Download Resources:</strong></p>
+      <ul>
+        <li><a href="assets/RQ3.xlsx" download>Download RQ3 Similarity Dataset (xlsx)</a></li>
+        <li><a href="assets/rq3_jplag_tool.zip" download>Download RQ3 JPlag Similarity Tool</a></li>
+      </ul>
+    </details>
+
+
+    <details>
+      <summary><strong>RQ4: What is the relationship between compiler-bug symptoms, modified OS components, and modified
+          lines of workarounds?</strong>
+      </summary>
+      <p><strong>Goal:</strong> Understand how different compiler bug symptoms affect various OS kernel components, and
+        how much code is typically modified in workarounds.</p>
+      <p><strong>Method:</strong> We group 494 workaround commits by OS component (e.g., library, driver, makefile) and
+        analyze LOC changes using GitHub diff stats.</p>
+      <img src="images/rq4_symptom_component.png" alt="Affected Components and LOC by Symptoms"
+        style="max-width: 100%; border: 1px solid #ccc;" />
+
+      <p><strong>Findings:</strong></p>
+      <ul>
+        <li><strong>Finding 7:</strong> Although compiler bugs tend to affect larger components, the library and the
+          Makefile are the most affected per code line.</li>
+        <li><strong>Finding 8:</strong> The workarounds on the development, the library, and the kernel core have more
+          modifications, and some modifications are repetitive.</li>
+        <li><strong>Finding 9:</strong> The library and the development are affected by more symptoms, and bypassing
+          crashes and wrong code requires more modifications.</li>
+      </ul>
+
+      <p><strong>Download Resources:</strong></p>
+      <ul>
+        <li><a href="assets/RQ4.xlsx" download>Download RQ4 Dataset (xlsx)</a></li>
+        <li><a href="assets/rq4_analysis_tool.zip" download>Download RQ4 Component Analyzer Tool</a></li>
+      </ul>
+    </details>
 
     <h2>Dataset & Tools</h2>
     <ul>
