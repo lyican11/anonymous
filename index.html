@@ -1,38 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Anonymous Paper Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anonymous Paper Demo: Compiler Bugs & OS Kernels</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <header>
-    <h1>Interactive Demo of Our Approach</h1>
+    <h1>Interactive Demo: Impact of Compiler Bugs on OS Kernels</h1>
     <p><strong>Paper ID:</strong> 1234</p>
   </header>
 
   <section class="content">
     <h2>Abstract</h2>
-    <p>This page presents supplementary results and an interactive demo for our anonymous submission.</p>
+    <p>We present supplementary results and tools for our empirical study on how compiler bugs affect OS kernel
+      development, based on analysis of 494 workarounds from 7 popular kernels.</p>
 
     <h2>Demo</h2>
-    <p>You can try our model below:</p>
+    <p>Explore our data and tool:</p>
     <iframe src="https://your-demo-link-if-any.com" width="100%" height="400" style="border:1px solid #ccc;"></iframe>
 
-    <h2>Results</h2>
-    <img src="images/result1.png" alt="Result Figure 1" />
-    <img src="images/result2.png" alt="Result Figure 2" />
+    <h2>Research Questions & Results</h2>
+
+    <h3>RQ1: Who reports the compiler bugs?</h3>
+    <p>We compare the identity of OS kernel workaround authors and compiler bug reporters to understand knowledge flow.
+    </p>
+    <img src="images/rq1_flow.png" alt="Knowledge Flow Chart" />
+
+    <h3>RQ2: How long does it take from reporting bugs to implementing workarounds?</h3>
+    <p>We analyze the latency between bug report submission and workaround commits.</p>
+    <img src="images/rq2_latency_cdf.png" alt="CDF of Report-to-Commit Latency" />
+
+    <h3>RQ3: How similar are code samples in bug reports to OS workaround code?</h3>
+    <p>We measure code similarity using JPlag and present distribution results by bug symptom.</p>
+    <img src="images/rq3_similarity.png" alt="Code Similarity Distribution" />
+
+    <h3>RQ4: What is the relationship between symptoms, components, and modified lines?</h3>
+    <p>We link bug symptoms to modified OS components and analyze how symptoms affect code size.</p>
+    <img src="images/rq4_symptom_component.png" alt="Affected Components and LOC by Symptoms" />
+
+    <h2>Dataset & Tools</h2>
+    <ul>
+      <li><a href="assets/workaround_dataset.csv" target="_blank">Download Dataset (CSV)</a></li>
+      <li><a href="assets/analysis_scripts.zip">Download Analysis Scripts (Anonymous)</a></li>
+      <li><a href="assets/similarity_tool.zip">Download Code Similarity Tool</a></li>
+    </ul>
 
     <h2>Supplementary Material</h2>
     <ul>
-      <li><a href="assets/supplementary.pdf" target="_blank">Download Supplementary PDF</a></li>
-      <li><a href="assets/code.zip">Download Code (Anonymous)</a></li>
+      <li><a href="assets/supplementary.pdf" target="_blank">Supplementary PDF</a></li>
+      <li><a href="assets/code.zip">Complete Code Package (Anonymous)</a></li>
     </ul>
   </section>
 
   <footer>
-    <p>This page is for anonymous review purposes only.</p>
+    <p>This page is for anonymous review purposes only. For any questions, please refer to the paper content.</p>
   </footer>
 </body>
+
 </html>
