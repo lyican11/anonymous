@@ -1,57 +1,106 @@
+/* 基础字体和排版 */
 body {
-  font-family: Arial, sans-serif;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: #fdfdfd;
-  color: #333;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0;
   line-height: 1.6;
+  background-color: #f7f9fb;
+  color: #333;
 }
 
 header {
+  background-color: #004080;
+  color: white;
+  padding: 2rem 1rem;
   text-align: center;
-  margin-bottom: 2rem;
 }
 
-h1 {
-  color: #007acc;
+header h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+section.content {
+  padding: 2rem 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
 }
 
 h2 {
+  color: #003366;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.3rem;
   margin-top: 2rem;
-  color: #333;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 5px;
 }
 
-img {
-  max-width: 100%;
-  margin: 1rem 0;
-  border: 1px solid #ccc;
+h3 {
+  color: #003366;
 }
 
-footer {
-  margin-top: 3rem;
-  text-align: center;
-  font-size: 0.9em;
-  color: #888;
+ul {
+  padding-left: 1.5rem;
 }
 
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* <details> 区块美化 */
 details {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px 15px;
-  margin-bottom: 1em;
-  transition: all 0.3s ease;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: #fdfdfd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
 }
 
-summary {
+details summary {
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 1.1em;
+  color: #004080;
+  margin-bottom: 0.8rem;
 }
 
 details[open] {
-  background-color: #f0f8ff;
+  background-color: #f5faff;
+}
+
+/* 代码块美化 */
+pre {
+  background-color: #f4f4f4;
+  padding: 1rem;
+  border-left: 4px solid #007acc;
+  overflow-x: auto;
+  border-radius: 4px;
+}
+
+code {
+  font-family: 'Courier New', monospace;
+  background-color: #eef2f5;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+/* 链接样式 */
+a {
+  color: #007acc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #004e94;
+}
+
+/* 页脚 */
+footer {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #555;
+  margin: 2rem 0;
 }

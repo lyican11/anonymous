@@ -33,15 +33,11 @@
       another example, we find that the libraries and make files of OS kernels are the most affected per code line.
       Furthermore, we provide our interpretations of our findings for programmers and researchers.</p>
 
-    <h2>Research Questions & Results</h2>
+    <h2>Research Questions , Tools & Dataset</h2>
     <details>
       <summary><strong>RQ1: Who reports the compiler bugs?</strong></summary>
-      <p><strong>Goal:</strong> Compare identities of OS workaround authors and compiler bug reporters to study
-        knowledge flow direction.</p>
-      <p><strong>Results:</strong> In 61.9% of cases, the workaround author and bug reporter are different. OS
-        programmers usually read compiler bug reports instead of reporting them.</p>
-      <img src="images/rq1_flow.png" alt="Knowledge Flow Chart" style="max-width: 100%; border: 1px solid #ccc;" />
-
+      <p><strong>Goal:</strong> Compare OS workaround authors and compiler bug reporters to study knowledge flow
+        direction.</p>
       <p><strong>Findings:</strong></p>
       <ul>
         <li><strong>Finding 1:</strong> In 61.9% of the links, compiler bugs are not reported by programmers of OS
@@ -50,24 +46,72 @@
           wrong-code and optimization compiler bugs.</li>
       </ul>
 
+      <p><strong>Tool:</strong></p>
+      <p>
+        We provide an automated tool to extract information (e.g. author, date) of OS commits and compiler bugs that
+        mentioned by these commits. Given a commit related to compiler bugs dataset extracted by GitHub API and keyword
+        search(imported via SQL), the tool performs:
+      </p>
+      <ul>
+        <li>Extraction of OS commit information and compiler bug URLs from commit comments via regular expressions</li>
+        <li>Retrieval of bug report information (reporter, report date, keyword) via crawler</li>
+      </ul>
+      <p>
+        The tool is reusable and supports any OS kernel commit dataset with minimal configuration. Output is a CSV
+        containing matched records, suitable for further quantitative analysis.
+      </p>
+      <p>
+        After generating the csv file, we also manually extracted and supplemented the data that was not correctly
+        extracted from the error log. Meanwhile, the datasets of RQ1 and RQ2 are further filtered from the generated csv
+        files (more_info.csv) for the research of this issue. The original generated file of the tool will be displayed
+        later
+      </p>
+
+
+      <p><strong>Dataset:</strong></p>
+      <p>
+        The dataset for RQ1 (<code>RQ1.xlsx</code>) includes 530 links of OS kernel commits and their
+        associated compiler bug reports. Key columns include:
+      </p>
+      <ul>
+        <li><strong>Commit Author</strong> - extracted from OS kernel Git repositories</li>
+        <li><strong>Reported By</strong> - extracted from compiler bug report</li>
+        <li><strong>Same</strong> - 1 if commit author and bug reporter are the same, 2 otherwise</li>
+        <li><strong>Symptom</strong> - categorized based on bug report and taxonomy from prior work</li>
+      </ul>
       <p><strong>Download Resources:</strong></p>
       <ul>
+        <li><a href="assets/commit_related_to_compiler_bug.sql">Download sql file of OS commits related to compiler bugs
+            (sql)</a></li>
+        <li><a href="assets/Extract_tool.py">Download The Extract Tool (py)</a></li>
         <li><a href="assets/RQ1.xlsx" download>Download RQ1 Dataset (xlsx)</a></li>
-        <!-- <li><a href="assets/rq1_author_match_tool.zip" download>Download RQ1 Author-Match Tool</a></li> -->
       </ul>
+
     </details>
 
     <details>
       <summary><strong>RQ2: How long does it take from reporting bug reports to implementing their workarounds?</strong>
       </summary>
-      <p><strong>Goal:</strong> Measure time delay between bug reporting and patching.</p>
-      <p><strong>Results:</strong> If OS programmers are not the bug reporters, the delay is ~10x longer.</p>
-      <img src="images/rq2_latency_cdf.png" alt="Latency CDF" style="max-width: 100%; border: 1px solid #ccc;" />
+      <p><strong>Goal:</strong> Measure time interval from bug report to workarounds.</p>
       <ul>
         <li><strong>Finding 3:</strong> When compiler bugs are not reported by OS programmers, it takes 10 times as many
           days to identify and bypass them.</li>
         <li><strong>Finding 4:</strong> The time intervals between reporting compiler bugs and bypassing them in OS
           kernels are shorter when the symptoms are crashes, optimizations, and wrong-code bugs.</li>
+      </ul>
+      <p><strong>Tool:</strong></p>
+      The information needed in RQ2 is also extracted by the tool in RQ1.
+
+      <p><strong>Dataset:</strong></p>
+      <p>
+        The dataset for RQ2 (<code>RQ2.xlsx</code>) includes 530 links of OS kernel commits and their
+        associated compiler bug reports. Key columns include:
+      </p>
+      <ul>
+        <li><strong>CommitDate</strong> - extracted from OS kernel Git repositories</li>
+        <li><strong>ReportDate</strong> - extracted from compiler bug report</li>
+        <li><strong>Time interval</strong> - calculated by subtracting the report date from the commit date</li>
+        <li><strong>Symptom</strong> - categorized based on bug report and taxonomy from prior work</li>
       </ul>
       <p><strong>Download Resources:</strong></p>
       <ul>
@@ -78,12 +122,9 @@
     <details>
       <summary><strong>RQ3: How similar are the code samples from bug reports and the real code from OS
           workarounds?</strong></summary>
+
       <p><strong>Goal:</strong> Analyze the similarity between code samples in compiler bug reports and real modified
         code in OS kernel workarounds.</p>
-      <p><strong>Method:</strong> We use <code>JPlag</code> with Greedy String Tiling algorithm to compare 239 (bug
-        sample, OS file) pairs.</p>
-      <img src="images/rq3_similarity.png" alt="Code Similarity Distribution"
-        style="max-width: 100%; border: 1px solid #ccc;" />
 
       <p><strong>Findings:</strong></p>
       <ul>
@@ -93,12 +134,33 @@
           of OS kernels than compiler bugs with other symptoms.</li>
       </ul>
 
+      <p><strong>Tool:</strong></p>
+      <p>We use <code>JPlag</code> to calculate the similarity between bug code samples and OS code files. The result is
+        generated as an HTML report.</p>
+      <p>Example usage (assuming the <code>gcc12345/</code> folder contains the bug sample and OS code files):</p>
+      <pre><code>java -jar jplag-6.0.0-jar-with-dependencies.jar -l c --overwrite -t 6 gcc12345</code></pre>
+
+      <p><strong>Dataset:</strong></p>
+      <p>
+        The dataset for RQ3 (<code>RQ3.xlsx</code>) includes 239 calculated similarity results between bug code samples
+        and OS code. Key columns include:
+      </p>
+      <ul>
+        <li><strong>Maximal</strong> - Maximal similarity calculated by JPlag. "none" indicates that the number of
+          tokens
+          does not meet the calculation requirement, and "out" indicates it exceeds the calculation range.</li>
+        <li><strong>file</strong> - Source code file in the OS kernel for similarity comparison</li>
+        <li><strong>Symptom</strong> - Bug symptom category based on prior taxonomy</li>
+      </ul>
+
       <p><strong>Download Resources:</strong></p>
       <ul>
+        <li><a href="assets/jplag-6.0.0-jar-with-dependencies.jar">Download JPlag Tool (jar)</a></li>
+        <li><a href="assets/RQ3_codeset.zip">Download Code Set Used for Similarity Calculation (zip)</a></li>
         <li><a href="assets/RQ3.xlsx" download>Download RQ3 Similarity Dataset (xlsx)</a></li>
-        <li><a href="assets/rq3_jplag_tool.zip" download>Download RQ3 JPlag Similarity Tool</a></li>
       </ul>
     </details>
+
 
 
     <details>
@@ -107,11 +169,6 @@
       </summary>
       <p><strong>Goal:</strong> Understand how different compiler bug symptoms affect various OS kernel components, and
         how much code is typically modified in workarounds.</p>
-      <p><strong>Method:</strong> We group 494 workaround commits by OS component (e.g., library, driver, makefile) and
-        analyze LOC changes using GitHub diff stats.</p>
-      <img src="images/rq4_symptom_component.png" alt="Affected Components and LOC by Symptoms"
-        style="max-width: 100%; border: 1px solid #ccc;" />
-
       <p><strong>Findings:</strong></p>
       <ul>
         <li><strong>Finding 7:</strong> Although compiler bugs tend to affect larger components, the library and the
@@ -122,24 +179,44 @@
           crashes and wrong code requires more modifications.</li>
       </ul>
 
+      <p><strong>Tool:</strong></p>
+      <p>We use <code>RQ4_input.xlsx</code> as the input of our tool, which include the OS name, commit ID, affected
+        component and symptom of compiler bugs that mentioned by the OS commit.
+        Then we use GitHub API to extract the add, delete and total modification of commits through OS name and commit
+        IDs.
+      </p>
+
+      <p><strong>Dataset:</strong></p>
+      <p>
+        The result dataset for RQ4 (<code>RQ4_result.xlsx</code>) includes 530 links of OS kernel commits and their
+        associated compiler bug reports. Key columns include:
+      </p>
+      <ul>
+        <li><strong>component</strong> - affected OS component by compiler bugs(checked manually through the taxonomy
+          built in our paper)</li>
+        <li><strong>add</strong> - added lines of code in OS commits</li>
+        <li><strong>delete</strong> - delted lines of code in OS commits</li>
+        <li><strong>total</strong> - total modified lines of code in OS commits</li>
+      </ul>
+
       <p><strong>Download Resources:</strong></p>
       <ul>
-        <li><a href="assets/RQ4.xlsx" download>Download RQ4 Dataset (xlsx)</a></li>
-        <li><a href="assets/rq4_analysis_tool.zip" download>Download RQ4 Component Analyzer Tool</a></li>
+        <li><a href="assets/RQ4_input.xlsx">Download RQ4 Tool Input (xlsx)</a></li>
+        <li><a href="assets/RQ4_get_modification_lines.py">Download RQ4 Tool (py)</a></li>
+        <li><a href="assets/RQ4_result.xlsx" download>Download RQ4 Result (xlsx)</a></li>
       </ul>
     </details>
 
-    <h2>Dataset & Tools</h2>
+    <h2>Generated File by Extract Tool</h2>
     <ul>
-      <li><a href="assets/workaround_dataset.csv" target="_blank">Download Dataset (CSV)</a></li>
-      <li><a href="assets/analysis_scripts.zip">Download Analysis Scripts (Anonymous)</a></li>
-      <li><a href="assets/similarity_tool.zip">Download Code Similarity Tool</a></li>
+      <li><a href="assets/table_data.csv">Data fetched from the commit database (csv)</a></li>
+      <li><a href="assets/unique_table_data.csv">Data after deduplication (csv)</a></li>
+      <li><a href="assets/more_info.csv">Data including bug report and OS commit information (csv)</a></li>
     </ul>
 
     <h2>Supplementary Material</h2>
     <ul>
-      <li><a href="assets/supplementary.pdf" target="_blank">Supplementary PDF</a></li>
-      <li><a href="assets/code.zip">Complete Code Package (Anonymous)</a></li>
+      <li><a href="assets/How_do_Compiler_Bugs_Affect_OS_Kernels.pdf" target="_blank">Our complete paper (pdf)</a></li>
     </ul>
   </section>
 
