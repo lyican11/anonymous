@@ -10,28 +10,14 @@
 
 <body>
   <header>
-    <h1>How do compiler bugs affect OS kernels</h1>
-    <p><strong>Paper ID:</strong> #247</p>
+    <h1>When Compiler Bugs Meet OS Kernels</h1>
+    <!-- <p><strong>Paper ID:</strong> #247</p> -->
   </header>
 
   <section class="content">
     <h2>Abstract</h2>
-    <p>As its name indicates, an operating system (OS) kernel is the core software of operating systems. Like other
-      software, compilers are critical in the development of OS kernels. A recent study shows that compiler bugs can
-      silently introduce bugs into their compiled code. Although compiler bugs are critical in the development of OS
-      kernels, most studies on compiler bugs analyze the characteristics of only compiler bugs. Their findings are less
-      interesting to outsiders, e.g. the OS community. Although two recent papers have started to analyze how compiler
-      bugs affect the development of other projects, no study has been conducted to explore how such bugs affect OS
-      kernels. As a result, many questions are still open. For instance, in the development of OS kernels, are most
-      compiler bugs identified by OS programmers themselves? When bypassing compiler bugs, what is the relationship
-      between compiler-bug symptoms and modified OS components? The answers to the above questions are useful for both
-      compiler and OS programmers.</p>
-    <p>To answer the above questions, we conducted the first empirical study on how compiler bugs affect OS kernels. We
-      collected 494 workarounds of compiler bugs from the revision histories of 7 popular OS kernels. We analyze these
-      workarounds and explore the answers to four research questions. We summarized our answers into 9 interesting
-      findings. For instance, we found that in most workarounds, compiler bugs are not reported by OS programmers. As
-      another example, we find that the libraries and make files of OS kernels are the most affected per code line.
-      Furthermore, we provide our interpretations of our findings for programmers and researchers.</p>
+    <p>A recent study shows that compiler bugs can silently introduce bugs into their compiled code. Although compiler bugs are critical in the development of OS kernels, most studies on compiler bugs analyze the characteristics of only compiler bugs themselves. Their findings are less interesting to outsiders, e.g., the OS community. Although two recent papers have started to analyze how compiler bugs affect the development of other projects, no study has been conducted to explore how such bugs affect OS kernels. As a result, many questions are still open. For instance, in the development of OS kernels, are most compiler bugs identified by OS programmers themselves? When bypassing compiler bugs, what is the relationship between compiler-bug symptoms and modified OS components? The answers to the above questions are useful for both compiler and OS programmers.</p>
+    <p>To answer the above questions, we conducted the first empirical study on how compiler bugs affect OS kernels. We collected 494 workarounds of compiler bugs from the revision histories of 7 popular OS kernels. We analyze these workarounds and explore the answers to four research questions. We summarized our answers into 9 interesting findings. For instance, we found that in most workarounds, compiler bugs are not reported by OS programmers. As another example, we find that the libraries and Makefiles of OS kernels are the most affected per code line.</p>
 
     <h2>Research Questions , Tools & Dataset</h2>
     <details>
@@ -221,7 +207,7 @@
 
     <h2>Supplementary Material</h2>
     <ul>
-      <li><a href="assets/How_do_Compiler_Bugs_Affect_OS_Kernels.pdf" target="_blank">Our complete paper (pdf)</a></li>
+      <li><a href="assets/main.pdf" target="_blank">Our complete paper (pdf)</a></li>
     </ul>
   </section>
 
